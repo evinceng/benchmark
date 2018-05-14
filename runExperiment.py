@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 
 # query variables
-users = [ ] # "evina", "user2",
+userNames = [ "evina", "user2" ] # "evina", "user2",
 sessions = [ ] #  "evina2018-05-10 14:33:21.185000", "user22018-05-14 12:06:23.842000",
 projectionFields = [ "userName", "relativeTime", "leftGaze:x", "leftGaze:y" ]
 relativeTime = [ ] # start, end
@@ -28,14 +28,14 @@ def constructProjectionFileds(getID = False):
         
     for field in projectionFields:
         fields[field] = 1
-    
+        
     return fields
 
 def constructQuery():
     query = { }
     
-    if users:
-        query["userName"] = { "$in": users }
+    if userNames:
+        query["userName"] = { "$in": userNames }
         
     if sessions:
         query["sessionID"] = { "$in": sessions }
@@ -61,6 +61,17 @@ if __name__ == "__main__":
     query = constructQuery()
     
     resultList = list(collection.find( query, projection))
+    
+    # construct users dict
+    users = { }
+    
+    for userName in userNames:
+        users[userName] = { }
+        for field in projectionFields:
+            if field != "userName":
+                users[userName][field] = [info[field] for info in resultList]
+                
+    # end of construct users dict
     
     colorUpon = [sensor[colorUponVariable] for sensor in resultList]
     Coordx = [sensor[xCoordVariable] for sensor in resultList]
