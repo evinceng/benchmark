@@ -9,6 +9,7 @@ from pymongo.errors import ConnectionFailure
 import sys
 import matplotlib.pyplot as plt
 from matplotlib import cm
+import config
 
 # query variables
 userNames = [ "evina", "user2" ] # "evina", "user2",
@@ -48,8 +49,13 @@ def constructQuery():
     return query
 
 if __name__ == "__main__":
+    
+    host = config.getConfig().get("SERVER", "Host")
+    port = config.getConfig().getint("SERVER", "Port")
+    
     try:
-        client = MongoClient(host="localhost", port=27017)
+        
+        client = MongoClient(host=host, port=port)
     except ConnectionFailure, e:
         sys.stderr.write("Could not connect to MongoDB: %s" % e)
         sys.exit(1)
