@@ -11,11 +11,15 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 import config
 
+import numpy as np
+from scipy.interpolate import splev
+from interpolate_funs import interpolateBS 
+
 # query variables
-userNames = [ "evina", "user2" ] # "evina", "user2",
+userNames = [ "evina" ] # "evina", "user2",
 sessions = [ ] #  "evina2018-05-10 14:33:21.185000", "user22018-05-14 12:06:23.842000",
 projectionFields = [ "userName", "relativeTime", "leftGaze:x", "leftGaze:y" ]
-relativeTime = [ ] # start, end
+relativeTime = [ ] # start, end # it will get all times if not provided
 
 # graph variables
 xCoordVariable = "leftGaze:x"
@@ -82,13 +86,37 @@ if __name__ == "__main__":
     colorUpon = [sensor[colorUponVariable] for sensor in resultList]
     Coordx = [sensor[xCoordVariable] for sensor in resultList]
     Coordy = [sensor[yCoordVariable] for sensor in resultList]
+    timeSt = [sensor["relativeTime"] for sensor in resultList]
     
     #gazeCoordxnpArray = np.array(gazeCoordx)
     #gazeCoordynpArray = np.array(gazeCoordy)
     
-    fig = plt.figure()
-    ax = fig.gca() 
-    ax.scatter(Coordx, Coordy, c=colorUpon, cmap=cm.seismic)
-    ax.legend()
+#    fig = plt.figure()
+#    ax = fig.gca() 
+#    ax.scatter(Coordx, Coordy, c=colorUpon, cmap=cm.seismic)
+#    ax.legend()
+#    plt.show()
     
+    Ts = 0.1 # Sampling frequency
+    fCode = 1
+    k = 3 
+    tMin = 1.2
+    tMax = 6.3
+    tIn = np.array(timeSt)
+    xIn = np.array(Coordx)# np.ones(20) + 0.8*np.random.rand(20)#
+    tck = interpolateBS(tIn, xIn, tMin, tMax, k, Ts, fCode)
+    
+    t = np.linspace(1.5, 6.3, 1000)
+    x = splev(t, tck)
+    
+#    plt.figure(1)
+#    plt.title('Check')
+#    plt.plot(timeSt) #), xIn, color='blue')
+#    plt.plot(t, x, color='red')
+#    plt.show()
+    
+    plt.figure(2)
+    plt.title('Gap filled?')
+    plt.plot(tIn, xIn, 'ro', color='blue')
+    plt.plot(t, x, color='red')
     plt.show()
