@@ -169,7 +169,7 @@ if __name__ == "__main__":
     fig = plt.figure()
     ax = fig.gca() 
     ax.scatter(xCoord, yCoord, c=timeStamps, cmap=cm.seismic)
-    ax.scatter(xCoordUser, yCoordUser, c=timeStampsUser, cmap=cm.seismic)
+    ax.scatter(xCoordUser, yCoordUser, c=timeStampsUser, cmap=cm.PiYG)
     ax.plot(interpolatedXOnSampledTime, interpolatedYOnSampledTime, color='green')
     ax.plot(interpolatedXOnSampledTimeUser, interpolatedYOnSampledTimeUser, color='yellow')
     ax.legend()
