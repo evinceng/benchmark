@@ -16,8 +16,8 @@ from scipy.interpolate import splev
 from interpolate_funs import interpolateBS 
 
 # query variables
-userNames = [ "user2", "evina"] # "evina", "user2",
-sessions = [ ] #  "evina2018-05-10 14:33:21.185000", "user22018-05-14 12:06:23.842000",
+userNames = [ "evina", "user2", ] # 
+sessions = [ "evina2018-05-10 14:33:21.185000", "user22018-05-14 12:06:23.842000", ] #  
 projectionFields = [ "userName", "relativeTime", "leftGaze:x", "leftGaze:y" ]
 relativeTime = [ ] # start, end # it will get all times if not provided
 
@@ -92,7 +92,6 @@ if __name__ == "__main__":
     
     resultList = list(collection.find( query, projection))
     
-    noAction = 0
     # construct users empty dict-----------------------------------------------
     users = { }
     for userName in userNames:
@@ -129,8 +128,8 @@ if __name__ == "__main__":
     Ts = 0.5 # Sampling frequency
     fCode = 1
     k = 3 
-    tMin = 1.6
-    tMax = 5
+    tMin = 1.6 # 1.2
+    tMax = 5   # 6.3
     xCoord = users[userName1][xCoordVariable]
     yCoord = users[userName1][yCoordVariable]
     timeStamps = users[userName1][timeStampVariable]
